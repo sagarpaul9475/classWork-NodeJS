@@ -1,0 +1,19 @@
+{
+  "name": "class_node_projec",
+  "version": "1.0.0",
+  "description": "Node practice in class",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node file.js",
+    "dev": "nodemon file.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
