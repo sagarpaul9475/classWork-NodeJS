@@ -83,3 +83,21 @@
 
 // a();
 // console.log(`Ended`);
+
+const fetchData = (classBack) => {
+    setTimeout(() => {
+        classBack("Data");
+    }
+    , 1000);
+}
+
+fetchData((data) => {
+    console.log(`Received : ${data}`);
+});
+
+const login =async () => {
+    await fetchData((data) => {
+        console.log(`Received : ${data}`);
+    });
+    console.log(`Logged in`);
+}
