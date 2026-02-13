@@ -84,20 +84,31 @@
 // a();
 // console.log(`Ended`);
 
-const fetchData = (classBack) => {
-    setTimeout(() => {
-        classBack("Data");
-    }
-    , 1000);
-}
+// const fetchData = (classBack) => {
+//     setTimeout(() => {
+//         classBack("Data");
+//     }
+//     , 1000);
+// }
 
-fetchData((data) => {
-    console.log(`Received : ${data}`);
-});
+// fetchData((data) => {
+//     console.log(`Received : ${data}`);
+// });
 
-const login =async () => {
-    await fetchData((data) => {
-        console.log(`Received : ${data}`);
-    });
-    console.log(`Logged in`);
+// const login =async () => {
+//     await fetchData((data) => {
+//         console.log(`Received : ${data}`);
+//     });
+//     console.log(`Logged in`);
+// }
+
+const sample= async () => {
+    console.log(`Fetching data`);
+    await fetch(`https://jsonplaceholder.typicode.com/posts/1`)
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+    console.log(`Data fetched`);
 }
+console.log(`Before calling sample`);
+sample();
+console.log(`After calling sample`);
