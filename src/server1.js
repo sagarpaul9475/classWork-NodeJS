@@ -1,14 +1,24 @@
-const express = require('express');
-const app = express();
-const userRoutes = require("./userRoutes");
-app.use("/", (req, res) => {
-    res.json({
-        id: 1,
-        name: "sagar paul"
-    })
+// const express = require('express');
+// const app = express();
+// const userRoutes = require("./userRoutes");
+
+// app.use("/", (req, res) => {
+//     res.json({
+//         id: 1,
+//         name: "sagar paul"
+//     })
+// });
+
+// console.log(userRoutes);
+// app.use("/", userRoutes);
+// //app.use(middleware);
+// app.listen(3000, () => {
+//     console.log("Server running at port 3000")
+// })
+const app = require("../app");
+const dotenv = require("dotenv");
+
+dotenv.config();
+app.listen(process.env.PORT, () => {
+    console.log("Server running at port " + process.env.PORT);
 });
-console.log(userRoutes);
-app.use("/", userRoutes);
-app.listen(3000, () => {
-    console.log("Server running at port 3000")
-})
