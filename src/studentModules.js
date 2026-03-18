@@ -1,0 +1,21 @@
+const students=[
+    {
+        name:"Sagar",
+        id:1,
+        age:24,
+        city:"Kolkata"
+    },
+    {
+        name:"Rahul",
+        id:2,
+        age:25,
+        city:"Delhi"
+    },
+    {
+        name:"vivek",
+        id:3,
+        age:22,
+        city:"patna"
+    }
+]
+module.exports=students;
