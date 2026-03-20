@@ -6,6 +6,7 @@ route.get("/",(req,res)=>{
 });
 route.get("/users", userController.getUsers);
 route.get("/users/:id",userController.getUserById);
+route.get("/skip",userController.skipAnotherMiddleware);
 route.get("/query",userController.queryParams);
 route.get("/students",userController.getStudents);
 route.get("/get/students",userController.getStudentById);

@@ -52,3 +52,7 @@ exports.deleteStudentById = (req, res) => {
         res.status(404).json({ message: "Student not found" });
     }
 };
+exports.skipAnotherMiddleware=(req,res,next)=>{
+    console.log("Skiped Another Middleware Executed");
+    next();
+};
