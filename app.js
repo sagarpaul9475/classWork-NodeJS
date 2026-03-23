@@ -1,7 +1,8 @@
 const express=require('express');
 const app=express();
+const jwt=require("jsonwebtoken");
 app.use(express.json());
-
+const verifyToken=require("./src/authController").verifyToken;
 const customMiddleware = (req, res, next) => {
     console.log("Custom Middleware Executed");
 
@@ -28,9 +29,18 @@ const m2=(req,res,next)=>{
 app.use(customMiddleware);
 app.use(anotherMiddleware);
 app.use(thirdMiddleware);
-app.get("/multimiddleware",[m1,m2],(req,res,next0=>{
-    res.send("sample Multi Middleware");
-}))
+app.use("/auth",require("./src/authRoutes"));
+app.use(verifyToken);
+// app.get("/multimiddleware",[m1,m2],(req,res,next)=>{
+//     res.send("sample Multi Middleware");
+//     next();
+// }))
+app.get("/profile", verifyToken, (req, res) => {
+    res.json({
+        message: "Welcome to profiler",
+        user: req.user
+    });
+});
 app.get("/test",(req,res,next)=>{
     if(req.query.roll=== "admin"){
         return next("route");
