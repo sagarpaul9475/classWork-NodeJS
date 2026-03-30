@@ -1,0 +1,13 @@
+<%- include("header")%>
+<%- include("body")%>
+<%- include("footer")%>
+
+<h1><%= productName%></h1>
+<ol>
+    <% students.forEach(student=>{%>
+        <li>
+            <%=student.name%> from
+            <%=student.department%>
+        </li>
+    <%})%>
+</ol>

@@ -2,7 +2,36 @@ const express=require('express');
 const app=express();
 const jwt=require("jsonwebtoken");
 app.use(express.json());
-const verifyToken=require("./src/authController").verifyToken;
+app.set("view engine","ejs");
+const verifyToken=require("./src/authController").verifyToken
+const content={
+    head:"header",
+    foot:"footer",
+    bo:"body"
+}
+const homePageContent={productName:"Gla university",
+        students:[
+            {name:"sagar",department:"CSE"},
+            {name:"vivek",department:"CSE"},
+            {name:"kaushik",department:"CSE"}
+        ],
+        head:content.head,
+        foot:content.foot,
+        bo:content.bo
+}
+
+app.get("/ejs",(req,res)=>{
+    res.render("home",homePageContent);
+})
+app.get("/ejsHeader",(req,res)=>{
+    res.render("header",{head:content.head})
+})
+app.get("/ejsFooter",(req,res)=>{
+    res.render("footer",{foot:content.foot})
+})
+app.get("/ejsBody",(req,res)=>{
+    res.render("body",{bo:content.bo})
+})
 const customMiddleware = (req, res, next) => {
     console.log("Custom Middleware Executed");
 
@@ -50,6 +79,8 @@ app.get("/test",(req,res,next)=>{
 app.get("/test",(req,res)=>{
     res.send("user-hi admin");
 })
+
 const userRoutes=require("./src/userRoutes");
+const students = require('./src/studentModules');
 app.use("/",userRoutes);
 module.exports=app;
