@@ -608,3 +608,65 @@ test> db.users.find({"address.city":'Bangalore'})
   }
 ]
 test>
+test>  db.users.find({"isActive":{"$in":[true,false]}})
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Ruby', 'Swift', 'React' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: 'python',
+    address: { city: 'kolkata', pincode: 500001 },
+    isActive: false,
+    'skills[0]': 'python'
+  }
+]
+test>  db.users.find({"isActive":{"$nin":[true]}})
+[
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: 'python',
+    address: { city: 'kolkata', pincode: 500001 },
+    isActive: false,
+    'skills[0]': 'python'
+  }
+]
