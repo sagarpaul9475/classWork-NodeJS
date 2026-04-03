@@ -1,0 +1,610 @@
+Mongo DB Aggression Commmand Line;
+test> db
+test
+test> show dbs
+admin                       40.00 KiB
+attendanceDB               396.00 KiB
+attendo                    104.00 KiB
+company                    120.00 KiB
+config                      48.00 KiB
+currentDB                   72.00 KiB
+faceDB                       8.00 KiB
+hotelBookingDB             124.00 KiB
+local                      248.00 KiB
+manggpa                     72.00 KiB
+mangpa                      72.00 KiB
+mongodbVSCodePlaygroundDB   40.00 KiB
+parking-management         296.00 KiB
+sagar                       72.00 KiB
+todo                       144.00 KiB
+uber                       284.00 KiB
+test> db.users.insertMany([
+|   {
+|     "_id": 1,
+|     "name": "Abhishek",
+|     "age": 22,
+|     "course": "B.Tech",
+|     "skills": ["JavaScript", "React"],
+|     "address": {
+|       "city": "Delhi",
+|       "pincode": 110001
+|     },
+|     "isActive": true
+|   },
+|   {
+|     "_id": 2,
+|     "name": "Priya",
+|     "age": 24,
+|     "course": "MBA",
+|     "skills": ["Excel", "Finance"],
+|     "address": {
+|       "city": "Mumbai",
+|       "pincode": 400001
+|     },
+|     "isActive": false
+|   },
+|   {
+|     "_id": 3,
+|     "name": "Rahul",
+|     "age": 21,
+|     "course": "BCA",
+|     "skills": ["Python", "Flask"],
+|     "address": {
+|       "city": "Bangalore",
+|       "pincode": 560001
+|     },
+|     "isActive": true
+|   },
+|   {
+|     "_id": 4,
+|     "name": "Sneha",
+|     "age": 23,
+|     "course": "B.Tech",
+|     "skills": ["Java", "Spring"],
+|     "address": {
+|       "city": "Hyderabad",
+|       "pincode": 500001
+|     },
+|     "isActive": true
+|   }
+| ])
+{ acknowledged: true, insertedIds: { '0': 1, '1': 2, '2': 3, '3': 4 } }
+test> db.users.show()
+TypeError: db.users.show is not a function
+test> db.users
+test.users
+test> users
+ReferenceError: users is not defined
+test> clear
+ReferenceError: clear is not defined
+test> show collections
+users
+test> db.users.find({"_id":1})
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  }
+]
+test> db.users.find({"_id"})
+Uncaught:
+SyntaxError: Unexpected token (1:20)
+
+> 1 | db.users.find({"_id"})
+    |                     ^
+  2 |
+
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.find({isActive:true,age:23})
+\[
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.find({age:{"$gte":23}})
+[
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.find({isActive:{"$eq":true}})
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.find({isActive":{"$eq":true}})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:23)
+
+> 1 | db.users.find({isActive":{"$eq":true}})
+    |                        ^
+  2 |
+
+test> db.users.find({"isActive":{"$eq":true}})
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.find({"isActive":{"$eq":1}})
+
+test> db.users.find({"_id":4},{name:1,age:1})
+[ { _id: 4, name: 'Sneha', age: 23 } ]
+test> db.users.find({"_id":4},{name:1,age:1,_id:1})
+[ { _id: 4, name: 'Sneha', age: 23 } ]
+test> db.users.find({"_id":4},{name:1,age:1,_id:0})
+[ { name: 'Sneha', age: 23 } ]
+test> db.users.find({"_id":4},{name:0})
+[
+  {
+    _id: 4,
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.find({"_id":4},{name:0,age:1,_id:0})
+MongoServerError[Location31253]: Cannot do inclusion on field age in exclusion projection
+test> db.users.find({"_id":4},{name:0,age:0,_id:0})
+[
+  {
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.find({"_id":4},{_id:0,name:1})
+[ { name: 'Sneha' } ]
+test> db.users.find({"_id":4},{name:0,_id:1})
+[
+  {
+    _id: 4,
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.find({"_id":4},{name:1,age:0,_id:1})
+MongoServerError[Location31254]: Cannot do exclusion on field age in inclusion projection
+test> db.users.find({"_id":4},{name:1,_id:0})
+[ { name: 'Sneha' } ]
+test> db.users.find({"address.city":'Hyderabad'})
+[
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: true
+  }
+]
+test> db.users.updateOne({"address.city":'Hyderabad'},{"$set":{isActive:false}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'Hyderabad', pincode: 500001 },
+    isActive: false
+  }
+]
+test> db.users.updateOne({"address.city":'Hyderabad'},{"$set":{"address.city":"kolkata"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'kolkata', pincode: 500001 },
+    isActive: false
+  }
+]
+test> db.users.updateOne({"address.city":'Hyderabad'},{"$set":{skills[0]:'python'}})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:63)
+
+> 1 | db.users.updateOne({"address.city":'Hyderabad'},{"$set":{skills[0]:'python'}})
+    |                                                                ^
+  2 |
+
+test> db.users.updateOne({"address.city":'Hyderabad'},{"$set":{"skills.skills[0]":'python'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'kolkata', pincode: 500001 },
+    isActive: false
+  }
+]
+test> db.users.updateOne({"address.city":'kolkata'},{"$set":{"skills.skills[0]":'python'}})
+MongoServerError: Cannot create field 'skills[0]' in element {skills: [ "Java", "Spring" ]}
+test> db.users.updateOne({"address.city":'kolkata'},{"$set":{"skills[0]":'python'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'Java', 'Spring' ],
+    address: { city: 'kolkata', pincode: 500001 },
+    isActive: false,
+    'skills[0]': 'python'
+  }
+]
+test> db.users.updateOne({"address.city":'kolkata'},{"$set":{"skills":'python'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'Delhi', pincode: 110001 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance' ],
+    address: { city: 'Mumbai', pincode: 400001 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: 'python',
+    address: { city: 'kolkata', pincode: 500001 },
+    isActive: false,
+    'skills[0]': 'python'
+  }
+]
+test> db.users.updateOne({"address.city":'Bangalore'},{"$push":{"skills":'React'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find({"address.city":'Bangalore'})
+[
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Flask', 'React' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  }
+]
+test> db.users.updateOne({"address.city":'Bangalore',"skills":"Flask"},{"$push":{"skills.$":'Swift'}})
+MongoServerError: The field 'skills.1' must be an array but is of type string in document {_id: 3}
+test> db.users.updateOne({"address.city":'Bangalore',"skills":"Flask"},{"$set":{"skills.$":'Swift'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find({"address.city":'Bangalore'})
+[
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Python', 'Swift', 'React' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  }
+]
+test> db.users.updateOne({"address.city":'Bangalore'},{"$set":{"skills.0":'Ruby'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find({"address.city":'Bangalore'})
+[
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Ruby', 'Swift', 'React' ],
+    address: { city: 'Bangalore', pincode: 560001 },
+    isActive: true
+  }
+]
+test>
