@@ -1,15 +1,10 @@
-const userList = [
-    {
-        id: 1,
-        name: "sample1"
-    },
-    {
-        id: 2,
-        name: "sample2"
-    },
-    {
-        id: 3,
-        name: "sample3"
-    }
-]
-module.exports = userList;
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+    id: Number,
+    name: String
+});
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;

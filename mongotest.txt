@@ -670,3 +670,674 @@ test>  db.users.find({"isActive":{"$nin":[true]}})
     'skills[0]': 'python'
   }
 ]
+test> db.users.updateMany({},{"$set":{"address.city":"new york","address.pincode":100}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript', 'React' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Ruby', 'Swift', 'React' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: 'python',
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python'
+  }
+]
+test> db.users.updateMany({_id:4},{$pull:{"skills[0]":'python'}})
+MongoServerError: Cannot apply $pull to a non-array value
+test> db.users.updateMany({},{$pull:{skills:"Ruby"}})
+MongoServerError: Cannot apply $pull to a non-array value
+test> db.users.updateMany({},{$pull:{skills}})
+ReferenceError: skills is not defined
+test> db.users.updateMany({},{$pull:{skills:"React"}})
+MongoServerError: Cannot apply $pull to a non-array value
+test> db.users.updateMany({_id:1},{$pull:{skills:"React"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Swift' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: 'python',
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python'
+  }
+]
+test> db.users.updateMany({_id:4},{$push:{skills:"React"}})
+MongoServerError: The field 'skills' must be an array but is of type string in document {_id: 4}
+test> db.users.updateMany({_id:4},{skills:"React"})
+MongoInvalidArgumentError: Update document requires atomic operators
+test> db.users.updateMany({_id:4},{skills:[]})
+MongoInvalidArgumentError: Update document requires atomic operators
+test> db.users.updateOne({_id:4},{skills:[]})
+MongoInvalidArgumentError: Update document requires atomic operators
+test> db.users.updateOne({_id:4},{$set:{skills:["python","java"]}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Swift' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'python', 'java' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python'
+  }
+]
+test> db.users.updateMany({"address.city":"new york",_id:4},{skills.0:"React"})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:61)
+
+> 1 | db.users.updateMany({"address.city":"new york",_id:4},{skills.0:"React"})
+    |                                                              ^
+  2 |
+
+test> db.users.updateMany({"address.city":"new york",_id:4},{"skills.0":"React"})
+MongoInvalidArgumentError: Update document requires atomic operators
+test> db.users.updateMany({"address.city":"new york",_id:4},{"skills[0]":"React"})
+MongoInvalidArgumentError: Update document requires atomic operators
+test> db.users.updateMany({"address.city":"new york",_id:4},{"skills.$":"React"})
+MongoInvalidArgumentError: Update document requires atomic operators
+test> db.users.updateMany({"address.city":"new york",_id:4},{"skills$0":"React"})
+MongoInvalidArgumentError: Update document requires atomic operators
+test> db.users.updateMany({"address.city":"new york",_id:4},$set:{"skills.0":"React"})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:58)
+
+> 1 | db.users.updateMany({"address.city":"new york",_id:4},$set:{"skills.0":"React"})
+    |                                                           ^
+  2 |
+
+test> db.users.updateOne({_id:4},$set:{"skills.0":"React"})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:31)
+
+> 1 | db.users.updateOne({_id:4},$set:{"skills.0":"React"})
+    |                                ^
+  2 |
+
+test> db.users.updateMany({"address.city":"new york",_id:4},{$set:{"skills.0":"React"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Swift' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'React', 'java' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python'
+  }
+]
+test> db.users.insertMany({},marks: [
+|       { subject: 'Maths', Score: 80 },
+|       { subject: 'CSE', Score: 70 },
+|       { subject: 'NODE', Score: 60 }
+|     ])
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:28)
+
+> 1 | db.users.insertMany({},marks: [
+    |                             ^
+  2 |       { subject: 'Maths', Score: 80 },
+  3 |       { subject: 'CSE', Score: 70 },
+  4 |       { subject: 'NODE', Score: 60 }
+
+test> db.users.insertMany({},{marks: [
+|       { subject: 'Maths', Score: 80 },
+|       { subject: 'CSE', Score: 70 },
+|       { subject: 'NODE', Score: 60 }
+|     ]})
+MongoInvalidArgumentError: Argument "docs" must be an array of documents
+test> db.users.insertMany(marks:[
+|       { subject: 'Maths', Score: 80 },
+|       { subject: 'CSE', Score: 70 },
+|       { subject: 'NODE', Score: 60 }
+|     ])
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:25)
+
+> 1 | db.users.insertMany(marks:[
+    |                          ^
+  2 |       { subject: 'Maths', Score: 80 },
+  3 |       { subject: 'CSE', Score: 70 },
+  4 |       { subject: 'NODE', Score: 60 }
+
+test> db.users.insertMany({marks:[
+|       { subject: 'Maths', Score: 80 },
+|       { subject: 'CSE', Score: 70 },
+|       { subject: 'NODE', Score: 60 }
+|     ]})
+MongoInvalidArgumentError: Argument "docs" must be an array of documents
+test> db.users.insertOne({marks:[
+|       { subject: 'Maths', Score: 80 },
+|       { subject: 'CSE', Score: 70 },
+|       { subject: 'NODE', Score: 60 }
+|     ]})
+{
+  acknowledged: true,
+  insertedId: ObjectId('69d34b6d289bbaf5b23682d1')
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Swift' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'React', 'java' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python'
+  },
+  {
+    _id: ObjectId('69d34b6d289bbaf5b23682d1'),
+    marks: [
+      { subject: 'Maths', Score: 80 },
+      { subject: 'CSE', Score: 70 },
+      { subject: 'NODE', Score: 60 }
+    ]
+  }
+]
+test> db.users.insertOne({},{marks:[
+|       { subject: 'Maths', Score: 80 },
+|       { subject: 'CSE', Score: 70 },
+|       { subject: 'NODE', Score: 60 }
+|     ]})
+{
+  acknowledged: true,
+  insertedId: ObjectId('69d34b8b289bbaf5b23682d2')
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Swift' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'React', 'java' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python'
+  },
+  {
+    _id: ObjectId('69d34b6d289bbaf5b23682d1'),
+    marks: [
+      { subject: 'Maths', Score: 80 },
+      { subject: 'CSE', Score: 70 },
+      { subject: 'NODE', Score: 60 }
+    ]
+  },
+  { _id: ObjectId('69d34b8b289bbaf5b23682d2') }
+]
+test> db.users.updateMany(
+|   {},
+|   {
+|     $set: {
+|       marks: [
+|         { subject: "Maths", score: 80 },
+|         { subject: "CSE", score: 70 },
+|         { subject: "NODE", score: 60 }
+|       ]
+|     }
+|   }
+| )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 6,
+  modifiedCount: 6,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Swift' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'React', 'java' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python',
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: ObjectId('69d34b6d289bbaf5b23682d1'),
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: ObjectId('69d34b8b289bbaf5b23682d2'),
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  }
+]
+test> db.users.updateOne(
+|   { _id: 4, "marks.subject": "NODE" },
+|   {
+|     $set: { "marks.$.score": 40 }
+|   }
+| )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Swift' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'React', 'java' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python',
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 40 }
+    ]
+  },
+  {
+    _id: ObjectId('69d34b6d289bbaf5b23682d1'),
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: ObjectId('69d34b8b289bbaf5b23682d2'),
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  }
+]
+test> db.users.updateOne(
+|   { _id: 4 },
+|   {
+|     $set: { "marks.$[elem].score": 90 }
+|   },
+|   {
+|     arrayFilters: [ { "elem.subject": "NODE" } ]
+|   }
+| )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.users.find()
+[
+  {
+    _id: 1,
+    name: 'Abhishek',
+    age: 22,
+    course: 'B.Tech',
+    skills: [ 'JavaScript' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 2,
+    name: 'Priya',
+    age: 24,
+    course: 'MBA',
+    skills: [ 'Excel', 'Finance', 'Flask Test' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 3,
+    name: 'Rahul',
+    age: 21,
+    course: 'BCA',
+    skills: [ 'Swift' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: true,
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: 4,
+    name: 'Sneha',
+    age: 23,
+    course: 'B.Tech',
+    skills: [ 'React', 'java' ],
+    address: { city: 'new york', pincode: 100 },
+    isActive: false,
+    'skills[0]': 'python',
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 90 }
+    ]
+  },
+  {
+    _id: ObjectId('69d34b6d289bbaf5b23682d1'),
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  },
+  {
+    _id: ObjectId('69d34b8b289bbaf5b23682d2'),
+    marks: [
+      { subject: 'Maths', score: 80 },
+      { subject: 'CSE', score: 70 },
+      { subject: 'NODE', score: 60 }
+    ]
+  }
+]

@@ -19,7 +19,6 @@ const homePageContent={productName:"Gla university",
         foot:content.foot,
         bo:content.bo
 }
-
 app.get("/ejs",(req,res)=>{
     res.render("home",homePageContent);
 })
