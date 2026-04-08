@@ -57,7 +57,9 @@ const m2=(req,res,next)=>{
 app.use(customMiddleware);
 app.use(anotherMiddleware);
 app.use(thirdMiddleware);
+const userRoutes=require("./src/userRoutes");
 app.use("/auth",require("./src/authRoutes"));
+app.use("/",userRoutes);
 app.use(verifyToken);
 // app.get("/multimiddleware",[m1,m2],(req,res,next)=>{
 //     res.send("sample Multi Middleware");
@@ -79,7 +81,6 @@ app.get("/test",(req,res)=>{
     res.send("user-hi admin");
 })
 
-const userRoutes=require("./src/userRoutes");
-const students = require('./src/studentModules');
-app.use("/",userRoutes);
+
+//const students = require('./src/studentModules');
 module.exports=app;

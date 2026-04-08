@@ -12,4 +12,6 @@ route.get("/students",userController.getStudents);
 route.get("/get/students",userController.getStudentById);
 route.post("/students",userController.postStudents);
 route.delete("/students/:id",userController.deleteStudentById);
+route.get("/find/user",userController.FindUserToDB);
+route.post("/add/user",userController.AddUserToDB);
 module.exports = route;
