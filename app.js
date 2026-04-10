@@ -57,10 +57,11 @@ const m2=(req,res,next)=>{
 app.use(customMiddleware);
 app.use(anotherMiddleware);
 app.use(thirdMiddleware);
-const userRoutes=require("./src/userRoutes");
+app.use("/urls",require("./src/urlRoutes"));
 app.use("/auth",require("./src/authRoutes"));
+const userRoutes=require("./src/userRoutes");// shortUrlRoutes
 app.use("/",userRoutes);
-app.use(verifyToken);
+//app.use(verifyToken);
 // app.get("/multimiddleware",[m1,m2],(req,res,next)=>{
 //     res.send("sample Multi Middleware");
 //     next();

@@ -73,12 +73,13 @@ exports.FindUserToDB = async (req, res) => {
     }
 };
 //for mongoose insert=> create and insertMany=>insertMany
+//best practice is to show the validation error to the user if any and not the server error
 exports.AddUserToDB = async (req, res) => {
     const { id, name } = req.body;
 
-    if (!id || !name) {
-        return res.status(400).json({ message: "ID and name are required" });
-    }
+    // if (!id || !name) {//server error is not shown to the user if we do this validation here because it will be caught by the catch block and we will send a server error to the user instead of a validation error
+    //     return res.status(400).json({ message: "ID and name are required" });
+    // }
     try {
         const exists = await User.findOne({ id });
         if (exists) {
@@ -90,6 +91,11 @@ exports.AddUserToDB = async (req, res) => {
             user: newUser
         });
     } catch (err) {
+        console.log(err);
+        if(err.name === 'ValidationError') {//fromt the mongoose validation error we can get the error messages and send it to the user instead of sending a server error
+            const messages = Object.values(err.errors).map(e => e.message);
+            return res.json({ status: "fail", messages: messages });
+        }
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
