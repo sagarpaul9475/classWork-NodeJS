@@ -60,7 +60,11 @@ app.use(thirdMiddleware);
 app.use("/urls",require("./src/urlRoutes"));
 app.use("/auth",require("./src/authRoutes"));
 const userRoutes=require("./src/userRoutes");// shortUrlRoutes
+const empRoutes=require("./src/empRoutes");
 app.use("/",userRoutes);
+app.use("/emp",empRoutes,(req,res)=>{
+    res.send("Entering into aggreation Mongo")
+});
 //app.use(verifyToken);
 // app.get("/multimiddleware",[m1,m2],(req,res,next)=>{
 //     res.send("sample Multi Middleware");
