@@ -62,6 +62,7 @@ app.use("/auth",require("./src/authRoutes"));
 const userRoutes=require("./src/userRoutes");// shortUrlRoutes
 const empRoutes=require("./src/empRoutes");
 app.use("/",userRoutes);
+app.use("/api/users", userRoutes);
 app.use("/emp",empRoutes,(req,res)=>{
     res.send("Entering into aggreation Mongo")
 });
